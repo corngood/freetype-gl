@@ -1,0 +1,61 @@
+name: freetype-gl
+version: 0.1
+cabal-version: >= 1.10
+build-type: Simple
+license: MIT
+license-file: LICENSE
+copyright: 2015 David McFarland
+author: David McFarland <corngood@gmail.com>
+maintainer: David McFarland <corngood@gmail.com>
+stability: alpha
+homepage: https://github.com/corngood/freetype-gl
+bug-reports: https://github.com/corngood/freetype-gl/issues
+synopsis: A binding for freetype-gl
+description:
+category: Graphics
+extra-source-files:
+    upstream/LICENSE
+
+source-repository head
+    type: git
+    location: https://github.com/corngood/freetype-gl.git
+
+flag dev
+    manual: True
+    default: False
+
+library
+    exposed-modules:
+        Graphics.Rendering.FreeTypeGL
+    hs-source-dirs:
+        src
+    default-language:
+        Haskell2010
+    build-depends:
+        base >= 3 && < 5,
+        OpenGLRaw >= 2 && < 3
+    ghc-options:
+        -Wall
+        -fno-warn-unused-do-bind
+        -fno-warn-name-shadowing
+    if flag(dev)
+        ghc-options: -Werror
+    c-sources:
+        upstream/texture-atlas.c
+        upstream/texture-font.c
+        upstream/vertex-buffer.c
+        upstream/vertex-attribute.c
+        upstream/font-manager.c
+        upstream/text-buffer.c
+        upstream/shader.c
+        upstream/vector.c
+        upstream/platform.c
+        upstream/edtaa3func.c
+    pkgconfig-depends:
+        freetype2,
+        glew
+    include-dirs:
+        upstream
+    cc-options:
+        -fPIC
+        -g
