@@ -8,11 +8,15 @@ module Graphics.Rendering.FreeTypeGL
     , FontManager
     , fromMarkup
     , TextBuffer
+    , shader
     , new
     , delete
     , render
+    , clear
     , addText
     , Markup(..)
+    , manager
+    , font
     ) where
 
 import Control.Exception
@@ -76,7 +80,7 @@ instance Storable Vec4 where
 
 data FontManager
 
-foreign import ccall "font-manager.h font_manager_get_from_markup" fromMarkup :: Ptr FontManager -> Ptr Markup -> Ptr Font
+foreign import ccall "font-manager.h font_manager_get_from_markup" fromMarkup :: Ptr FontManager -> Ptr Markup -> IO (Ptr Font)
 
 data VertexBuffer
 
@@ -126,6 +130,7 @@ instance Storable TextBuffer where
 foreign import ccall "text-buffer.h text_buffer_new" new :: CSize -> IO (Ptr TextBuffer)
 foreign import ccall "text-buffer.h text_buffer_delete" delete :: Ptr TextBuffer -> IO ()
 foreign import ccall "text-buffer.h text_buffer_render" render :: Ptr TextBuffer -> IO ()
+foreign import ccall "text-buffer.h text_buffer_clear" clear :: Ptr TextBuffer -> IO ()
 foreign import ccall "text-buffer.h text_buffer_add_text" addText :: Ptr TextBuffer -> Ptr Vec2 -> Ptr Markup -> Ptr CWchar -> CSize -> IO ()
 
 data Markup = Markup
